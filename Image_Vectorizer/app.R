@@ -41,7 +41,9 @@ ui <- fluidPage(
                         "Lower and Upper Percent:",
                         min = 0,
                         max = 100,
-                        value = c(10,30))
+                        value = c(10,30)),
+            downloadButton("downloadImage",
+                           "Download Image")
         ),
 
         # Show a plot of the generated distribution
@@ -59,26 +61,6 @@ server <- function(input, output) {
     toListen <- reactive({
         list(input$radius,input$sigma,input$bounds_pct,input$upload)
     })
-    
-    # radius = 0
-    # sigma = 1
-    # lower_pct = 10
-    # upper_pct = 30
-    # 
-    # geom_string <- paste(
-    #     radius,
-    #     "x",
-    #     sigma,
-    #     "+",
-    #     lower_pct,
-    #     "%+",
-    #     upper_pct,
-    #     ""
-    # )
-    # 
-    # processed_image <- image_read("pixar.jpg") %>%
-    #     image_canny(geometry = geom_string) %>%
-    #     image_write(tempfile(fileext='jpg'), format = 'jpg')
     
     observeEvent(
         toListen(), {
@@ -155,6 +137,15 @@ server <- function(input, output) {
                 
                 
             }, deleteFile = FALSE)
+            
+            output$downloadImage <- downloadHandler(
+                filename = "robot_image.jpg",
+                content = function(file) {
+                    image_read(image_path) %>%
+                        image_canny(geometry = geom_string) %>%
+                        image_write(path = file, format = 'jpg')
+                }
+            )
         }
     )
 }
