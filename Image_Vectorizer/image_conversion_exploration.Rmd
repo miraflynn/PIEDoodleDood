@@ -1,0 +1,49 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+library(tidyverse)
+library(magick)
+```
+```{r}
+pixar <- image_read("pixar.jpg")
+pixar
+```
+
+```{r}
+pixar <- image_read("pixar.jpg")
+radius <- 0
+sigma <- 1
+lower_pct <- 10
+upper_pct <- 30
+geom_string <- paste(
+  radius,
+  "x",
+  sigma,
+  "+",
+  lower_pct,
+  "%+",
+  upper_pct,
+  ""
+)
+
+edges_pixar <- pixar %>% 
+  # image_enhance() #%>%
+  # image_normalize() #%>%
+  image_canny(geometry = geom_string)
+  # image_quantize(max = 2, colorspace = "gray", dither = FALSE) %>%
+  # image_negate()
+edges_pixar
+```
+
+```{r}
+foo <- edges_pixar %>%
+  image_hough_txt(format = "svg") %>% 
+  cat()
+foo
+```
+
+
