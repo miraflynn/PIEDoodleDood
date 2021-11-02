@@ -237,13 +237,19 @@ x dplyr::lag()    masks stats::lag()</code></pre>
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShtYWdpY2spXG5gYGAifQ== -->
 <pre class="r"><code>library(magick)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogcGFja2FnZSDigJhtYWdpY2vigJkgd2FzIGJ1aWx0IHVuZGVyIFIgdmVyc2lvbiA0LjEuMVxuTGlua2luZyB0byBJbWFnZU1hZ2ljayA2LjkuMTIuM1xuRW5hYmxlZCBmZWF0dXJlczogY2Fpcm8sIGZyZWV0eXBlLCBmZnR3LCBnaG9zdHNjcmlwdCwgaGVpYywgbGNtcywgcGFuZ28sIHJhdywgcnN2Zywgd2VicFxuRGlzYWJsZWQgZmVhdHVyZXM6IGZvbnRjb25maWcsIHgxMVxuIn0= -->
+<pre><code>Warning: package ‘magick’ was built under R version 4.1.1
+Linking to ImageMagick 6.9.12.3
+Enabled features: cairo, freetype, fftw, ghostscript, heic, lcms, pango, raw, rsvg, webp
+Disabled features: fontconfig, x11</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGl4YXIgPC0gaW1hZ2VfcmVhZChcInBpeGFyLmpwZ1wiKVxucGl4YXJcbmBgYCJ9 -->
 <pre class="r"><code>pixar &lt;- image_read(&quot;pixar.jpg&quot;)
 pixar</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6Nywic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIxIHggNyJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUJtMVF5MnJETUJCY3UxYlVHUHFBZmtSUE1jU2xCSHJzZzlDZVFrNjVxclljaXlxU2tSU1M5dFJQN0JjbFhUdFdHa1FGMGo1bTFwNmQrZlBpTGwya0FIQUdTWVF2d1JRR1Q3TnhmcDhESkRGV0VTUXdiT01XOFJ0TUtON3JFeUI1bTcxTU1WNTBQWWhmLy9Mb051VGErZlFSWTNyQXU5TnpIMzRDTHBuazIwbW9naWkyNHJabjByNDVxTFJaTWVjcEcxRzYya00xRjh2YVEybWhwVGEyWVFYM1pKeHp2aml2aE9SV2ZQbWFsbHhaNFQ0RERVT2pONW5YMGFxUHYvSFo0d25GRnBKWkc2eVZsc3l4ckRJNGo5VXVHS0c2Y1VJckhJcGJyMGt3SEptZ2NiVldyWkp5Vk5ScjlURWEvKzl0ZDMxT0Q3K005LzJuaUxlS3E2VlFSMk1rZStleUx5NXg0MjdockRGQ0hkM0VyczJjZGt5ZStPczczVzZ3K3dVcTJoQnJZd0lBQUE9PSJ9 -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6Nywic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIxIHggNyJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUJtMVF5MnJETUJCY3UxYmNHUHFBZmtSUE1kU2xCSHJzZzlDY1FrNjVxclljaXlxU2tSU1M5dFJQN0JjbFhTdFdHa1FGMGo1bTFwNmQrY3ZpUGx0a0FIQUdTWVF2d1JRR3o3Tzc0cUVBU0dLc0lraGcyTVV0NGplWXBIaXZUNEJrT251ZFlMeHdQWWpmL3ZMb051U2ErZVFKWTNiQTNlbTVqejhCbDR5TDdUaFVRU1JkTWRNejA3NDVxSlZlVWVzcEcxN1p4a01ONDh2R1ExbXBoTkttcFNYelpKeXp2aml2dVdDR2YvazZyWmcwM0g0R0dvWmFiWEt2bzFNZmYrT3p4eE9LTFFVMUpsZ3JxNmlsZWExeEhxdGRNSktxMW5JbGNTanV2Q2JCY0tTRHh0VmFka3FxVWRtczVjZW8rTjliZDMyZUhuNFo3L3RQRVc4Vmswc3VqOFlJK3M1RVgxeml4bTdodk5WY0h0M0Vyc210c2xTYytPczdiamZZL1FKTXZQTE9Zd0lBQUE9PSJ9 -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["format"],"name":[1],"type":["chr"],"align":["left"]},{"label":["width"],"name":[2],"type":["int"],"align":["right"]},{"label":["height"],"name":[3],"type":["int"],"align":["right"]},{"label":["colorspace"],"name":[4],"type":["chr"],"align":["left"]},{"label":["matte"],"name":[5],"type":["lgl"],"align":["right"]},{"label":["filesize"],"name":[6],"type":["int"],"align":["right"]},{"label":["density"],"name":[7],"type":["chr"],"align":["left"]}],"data":[{"1":"JPEG","2":"585","3":"295","4":"sRGB","5":"FALSE","6":"15056","7":"72x72"}],"options":{"columns":{"min":{},"max":[10],"total":[7]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
@@ -279,7 +285,7 @@ edges_pixar &lt;- pixar %&gt;%
   # image_negate()
 edges_pixar</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6Nywic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIxIHggNyJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUJuVlFYVXZETUJTOXJlM2lDbFBCSCtIVENxdklmb0RLMEtmaDAxNWptNjdCTENsSnhqYWYvT1didDEwelE4QkFjOC85T09tNTUrTmw5Wml0TWdDNGdpVENPMFVJbytmbHJIZ3FBSklZc3dnU0dIZHhqLzE3QkFTL082K1J2QzlmRnhnbmZRM2l0ejhjUFlTekMwMFBHTE56dno4VEQvdXo2YnpZejBNVnFhUWJab1pKTWhSSHRkSWJhdDNJamxlMmNhMkc4WFhqV2xtcGhOS21wU1Z6dzhpekxybXV1V0NHZjd1Y1ZFd2FiZytCaHJGV3U5enA2TlRIUDNpZDhJUmlTMEdOQ2RiS0ttcHBYbXZrWTNZTUtFUzFsaXVKcExqek9nM0lrUTRLdDF2WkthbW1aYk9WWDlQWlA5NUdIaWJuWDhhbjRhblVXY1hrbXN1TE1ZSitNakVrTjdoeHYzRGVhaTR2Ym1MVjVGWlpLangvWGFYZkRZNi91c3RXVkdNQ0FBQT0ifQ== -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6Nywic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIxIHggNyJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUJuVlFYVXZETUJTOXFlM3FBbFBCSCtIVENuYklmb0RLMEtmaDAxNWptNjdCTENsSnhqYWYvT1didDEwelM4QkFjOC85T09tNTUrTmxOYU1yQ2dCWEVCTzhFNFF3ZWw0KzVrODVRQnhoUmlDR2NSdjMyTDlIa09KM04yakU3OHZYQmNaSlY0UG83UStUaDNCMllkZ0JJejMzdXpNWjRPRnNNcy8zODFCRm90aUcyMzR5N1l1alNwc05jMzVrSjBwWCsxYk54YnIyTFZwb3FZMXRXTUg5TVBLY1Q2NHJJYmtWM3o1UFM2NnNjSWRBdzlqb1hlWjF0T3FqSDd4T2VFS3hoV1RXQm12UmtqbVdWUWI1bUIwRFNxb2JKN1JDVXRSNm5RUmtZb0xDN1ZhMVNzcHBVVy9WMTNUMmo3ZGtnTlB6TDZOVC8xVGlyZUpxTGRURkdNayt1ZXlURzl5NFd6aHJqRkFYTjdGcU02Y2Rrd04vZmFYYkRZNi8vby9xa21NQ0FBQT0ifQ== -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["format"],"name":[1],"type":["chr"],"align":["left"]},{"label":["width"],"name":[2],"type":["int"],"align":["right"]},{"label":["height"],"name":[3],"type":["int"],"align":["right"]},{"label":["colorspace"],"name":[4],"type":["chr"],"align":["left"]},{"label":["matte"],"name":[5],"type":["lgl"],"align":["right"]},{"label":["filesize"],"name":[6],"type":["int"],"align":["right"]},{"label":["density"],"name":[7],"type":["chr"],"align":["left"]}],"data":[{"1":"JPEG","2":"585","3":"295","4":"Gray","5":"FALSE","6":"0","7":"72x72"}],"options":{"columns":{"min":{},"max":[10],"total":[7]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
@@ -295,13 +301,23 @@ edges_pixar</code></pre>
   image_hough_txt(format = &quot;svg&quot;) %&gt;% 
   cat()</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiPD94bWwgdmVyc2lvbj1cIjEuMFwiIHN0YW5kYWxvbmU9XCJub1wiPz5cbjwhRE9DVFlQRSBzdmcgUFVCTElDIFwiLS8vVzNDLy9EVEQgU1ZHIDIwMDEwOTA0Ly9FTlwiXG4gIFwiaHR0cDovL3d3dy53My5vcmcvVFIvMjAwMS9SRUMtU1ZHLTIwMDEwOTA0L0RURC9zdmcxMC5kdGRcIj5cbjxzdmcgd2lkdGg9XCI1ODVcIiBoZWlnaHQ9XCIyOTVcIj5cbjxkZXNjPkhvdWdoIGxpbmUgdHJhbnNmb3JtOiAzMHgxNSs1OTxcL2Rlc2M+XG48ZGVzYz54MSx5MSAgeDIseTIgIyBjb3VudCBhbmdsZSBkaXN0YW5jZTxcL2Rlc2M+XG48XC9zdmc+XG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiPD94bWwgdmVyc2lvbj1cIjEuMFwiIHN0YW5kYWxvbmU9XCJub1wiPz5cbjwhRE9DVFlQRSBzdmcgUFVCTElDIFwiLS8vVzNDLy9EVEQgU1ZHIDIwMDEwOTA0Ly9FTlwiXG4gIFwiaHR0cDovL3d3dy53My5vcmcvVFIvMjAwMS9SRUMtU1ZHLTIwMDEwOTA0L0RURC9zdmcxMC5kdGRcIj5cbjxzdmcgd2lkdGg9XCI1ODVcIiBoZWlnaHQ9XCIyOTVcIj5cbjxkZXNjPkhvdWdoIGxpbmUgdHJhbnNmb3JtOiAzMHgxNSs1OTxcL2Rlc2M+XG48ZGVzYz54MSx5MSAgeDIseTIgIyBjb3VudCBhbmdsZSBkaXN0YW5jZTxcL2Rlc2M+XG4gIDxsaW5lIHgxPVwiMFwiIHkxPVwiMTIyXCIgeDI9XCI1ODVcIiB5Mj1cIjEyMlwiLz5cbjxkZXNjPjExNiA5MCAzODg8XC9kZXNjPlxuICA8bGluZSB4MT1cIjBcIiB5MT1cIjExMi45NTZcIiB4Mj1cIjU4NVwiIHkyPVwiMTk1LjE3MlwiLz5cbjxkZXNjPjcyIDk4IDQyMDxcL2Rlc2M+XG4gIDxsaW5lIHgxPVwiMFwiIHkxPVwiMTY4XCIgeDI9XCI1ODVcIiB5Mj1cIjE2OFwiLz5cbjxkZXNjPjEyMyA5MCA0MzQ8XC9kZXNjPlxuICA8bGluZSB4MT1cIjBcIiB5MT1cIjE2MS43MTFcIiB4Mj1cIjU4NVwiIHkyPVwiMTkyLjM3XCIvPlxuPGRlc2M+MTI1IDkzIDQ0MzxcL2Rlc2M+XG4gIDxsaW5lIHgxPVwiMFwiIHkxPVwiMTkwXCIgeDI9XCI1ODVcIiB5Mj1cIjE5MFwiLz5cbjxkZXNjPjc4IDkwIDQ1NjxcL2Rlc2M+XG48XC9zdmc+XG4ifQ== -->
 <pre><code>&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;
 &lt;!DOCTYPE svg PUBLIC &quot;-//W3C//DTD SVG 20010904//EN&quot;
   &quot;http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd&quot;&gt;
 &lt;svg width=&quot;585&quot; height=&quot;295&quot;&gt;
 &lt;desc&gt;Hough line transform: 30x15+59&lt;/desc&gt;
 &lt;desc&gt;x1,y1  x2,y2 # count angle distance&lt;/desc&gt;
+  &lt;line x1=&quot;0&quot; y1=&quot;122&quot; x2=&quot;585&quot; y2=&quot;122&quot;/&gt;
+&lt;desc&gt;116 90 388&lt;/desc&gt;
+  &lt;line x1=&quot;0&quot; y1=&quot;112.956&quot; x2=&quot;585&quot; y2=&quot;195.172&quot;/&gt;
+&lt;desc&gt;72 98 420&lt;/desc&gt;
+  &lt;line x1=&quot;0&quot; y1=&quot;168&quot; x2=&quot;585&quot; y2=&quot;168&quot;/&gt;
+&lt;desc&gt;123 90 434&lt;/desc&gt;
+  &lt;line x1=&quot;0&quot; y1=&quot;161.711&quot; x2=&quot;585&quot; y2=&quot;192.37&quot;/&gt;
+&lt;desc&gt;125 93 443&lt;/desc&gt;
+  &lt;line x1=&quot;0&quot; y1=&quot;190&quot; x2=&quot;585&quot; y2=&quot;190&quot;/&gt;
+&lt;desc&gt;78 90 456&lt;/desc&gt;
 &lt;/svg&gt;</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm9vXG5gYGAifQ== -->
