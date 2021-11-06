@@ -8,8 +8,15 @@
 #
 
 library(shiny)
+library(shinyBS)
 library(tidyverse)
 library(magick)
+
+
+radiusTooltip <- "Radius of the Gaussian noise filter. Has minimal effect on the image"
+sigmaTooltip <- "Sigma value of the Gaussian noise filter. Increasing sigma makes the lines rounder"
+boundsTooltip <- "Threshold for weak and strong edges. Increasing either value will eliminate weaker edges"
+
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
@@ -25,23 +32,36 @@ ui <- fluidPage(
                 "Upload Image To Draw",
                 accept = "image/*"
             ),
+            
+            sliderInput("resolution",
+                        "Resolution:",
+                        min = 100,
+                        max = 1000,
+                        value = 500,
+                        step = 50
+                        ),
+            
             sliderInput("radius",
                         "Radius:",
                         min = 0,
                         max = 20,
                         value = 0),
+            bsTooltip("radius", radiusTooltip),
             
             sliderInput("sigma",
                         "Sigma:",
                         min = 0,
                         max = 20,
                         value = 1),
+            bsTooltip("sigma", sigmaTooltip),
             
             sliderInput("bounds_pct",
                         "Lower and Upper Percent:",
                         min = 0,
                         max = 100,
                         value = c(10,30)),
+            bsTooltip("bounds_pct",boundsTooltip),
+            
             downloadButton("downloadImage",
                            "Download Image")
         ),
@@ -59,7 +79,13 @@ ui <- fluidPage(
 server <- function(input, output) {
     
     toListen <- reactive({
-        list(input$radius,input$sigma,input$bounds_pct,input$upload)
+        list(
+            input$radius,
+            input$sigma,
+            input$bounds_pct,
+            input$upload,
+            input$resolution
+            )
     })
     
     observeEvent(
@@ -72,7 +98,8 @@ server <- function(input, output) {
             )
 
             uploaded_image <- image_read(image_path) %>%
-            image_write(tempfile(fileext='jpg'), format = 'jpg')
+                image_scale(input$resolution) %>%
+                image_write(tempfile(fileext='jpg'), format = 'jpg')
             
             output$original_image <- renderImage({
                 
@@ -99,6 +126,8 @@ server <- function(input, output) {
             sigma = input$sigma
             lower_pct = input$bounds_pct[1]
             upper_pct = input$bounds_pct[2]
+            lower_pct = ifelse(lower_pct == 0, 1, lower_pct)
+            upper_pct = ifelse(upper_pct == 0, 1, upper_pct)
             
             geom_string <- paste(
                 radius,
@@ -112,7 +141,9 @@ server <- function(input, output) {
             )
             
             processed_image <- image_read(image_path) %>%
+                image_scale(input$resolution) %>%
                 image_canny(geometry = geom_string) %>%
+                image_quantize(max = 2, colorspace = "gray", dither = FALSE) %>%
                 image_write(tempfile(fileext='jpg'), format = 'jpg')
             
             output$edge_image <- renderImage({

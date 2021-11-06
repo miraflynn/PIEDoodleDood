@@ -7,14 +7,16 @@ output: html_notebook
 ```{r}
 library(tidyverse)
 library(magick)
+library(igraph)
+library(png)
 ```
 ```{r}
-pixar <- image_read("pixar.jpg")
-pixar
+img <- image_read("olin_o.jpg")
+img
 ```
 
 ```{r}
-pixar <- image_read("pixar.jpg")
+img <- image_read("olin_o.jpg")
 radius <- 0
 sigma <- 1
 lower_pct <- 10
@@ -30,20 +32,24 @@ geom_string <- paste(
   ""
 )
 
-edges_pixar <- pixar %>% 
+edges_img <- img %>% 
   # image_enhance() #%>%
   # image_normalize() #%>%
   image_canny(geometry = geom_string)
   # image_quantize(max = 2, colorspace = "gray", dither = FALSE) %>%
   # image_negate()
-edges_pixar
+edges_img
 ```
 
+
+
 ```{r}
-foo <- edges_pixar %>%
-  image_hough_txt(format = "svg") %>% 
-  cat()
-foo
+
+x <- edges_img %>%
+  image_write(tempfile(fileext='png'), format = 'png') %>%
+  readPNG()
+
 ```
+
 
 
