@@ -343,3 +343,16 @@ instructions_pos %>%
   geom_segment(lineend = "square") +
   coord_fixed()
 ```
+
+```{r}
+# Do all of the same things as above but with functions in a separate file
+source("generate_fns.R")
+
+edges <- generate_edges(img_df)
+instructions <- generate_instructions(edges)
+instructions
+```
+```{r}
+write(instructions, "test.txt")
+```
+

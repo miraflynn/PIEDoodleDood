@@ -12,6 +12,8 @@ library(shinyBS)
 library(tidyverse)
 library(magick)
 
+source("generate_fns.R")
+
 
 radiusTooltip <- "Radius of the Gaussian noise filter. Has minimal effect on the image"
 sigmaTooltip <- "Sigma value of the Gaussian noise filter. Increasing sigma makes the lines rounder"
@@ -62,8 +64,8 @@ ui <- fluidPage(
                         value = c(10,30)),
             bsTooltip("bounds_pct",boundsTooltip),
             
-            downloadButton("downloadImage",
-                           "Download Image")
+            downloadButton("downloadInstructions",
+                           "Generate Instructions")
         ),
 
         # Show a plot of the generated distribution
@@ -169,12 +171,23 @@ server <- function(input, output) {
                 
             }, deleteFile = FALSE)
             
-            output$downloadImage <- downloadHandler(
-                filename = "robot_image.jpg",
-                content = function(file) {
-                    image_read(image_path) %>%
+            # output$downloadImage <- downloadHandler(
+            #     filename = "robot_image.jpg",
+            #     content = function(file) {
+            #         image_read(image_path) %>%
+            #             image_canny(geometry = geom_string) %>%
+            #             image_write(path = file, format = 'jpg')
+            #     }
+            # )
+            output$downloadInstructions <- downloadHandler(
+                filename = "robot_instructions.txt",
+                content = function(file){
+                    img_df <- image_read(image_path) %>%
                         image_canny(geometry = geom_string) %>%
-                        image_write(path = file, format = 'jpg')
+                        generate_matrix() %>%
+                        generate_edges() %>%
+                        generate_instructions() %>%
+                        write(file = file)
                 }
             )
         }
