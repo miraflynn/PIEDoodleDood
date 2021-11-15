@@ -40,7 +40,7 @@ ui <- fluidPage(
                         min = 100,
                         max = 1000,
                         value = 500,
-                        step = 50
+                        step = 25
                         ),
             
             sliderInput("radius",
@@ -101,7 +101,7 @@ server <- function(input, output) {
 
             uploaded_image <- image_read(image_path) %>%
                 image_scale(input$resolution) %>%
-                image_write(tempfile(fileext='jpg'), format = 'jpg')
+                image_write(tempfile(fileext='png'), format = 'png')
             
             output$original_image <- renderImage({
                 
@@ -145,8 +145,8 @@ server <- function(input, output) {
             processed_image <- image_read(image_path) %>%
                 image_scale(input$resolution) %>%
                 image_canny(geometry = geom_string) %>%
-                image_quantize(max = 2, colorspace = "gray", dither = FALSE) %>%
-                image_write(tempfile(fileext='jpg'), format = 'jpg')
+                # image_quantize(max = 2, colorspace = "gray", dither = FALSE) %>%
+                image_write(tempfile(fileext='png'), format = 'png')
             
             output$edge_image <- renderImage({
                 
@@ -179,15 +179,26 @@ server <- function(input, output) {
             #             image_write(path = file, format = 'jpg')
             #     }
             # )
+            # output$downloadInstructions <- downloadHandler(
+            #     filename = "robot_instructions.txt",
+            #     content = function(file) {
+            #         foo <- image_read(image_path) %>%
+            #             image_canny(geometry = geom_string) %>%
+            #             image_write(tempfile(fileext='png'), format = 'png')
+            #     }
+            # )
             output$downloadInstructions <- downloadHandler(
                 filename = "robot_instructions.txt",
                 content = function(file){
-                    img_df <- image_read(image_path) %>%
+                    image_read(image_path) %>%
+                        image_scale(input$resolution) %>%
                         image_canny(geometry = geom_string) %>%
-                        generate_matrix() %>%
+                        image_write(tempfile(fileext='png'), format = 'png') %>%
+                        readPNG() %>%
+                        as.data.frame() %>%
                         generate_edges() %>%
                         generate_instructions() %>%
-                        write(file = file)
+                        write(file)
                 }
             )
         }

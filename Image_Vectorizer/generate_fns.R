@@ -3,7 +3,7 @@ library(magick)
 library(png)
 
 generate_matrix <- function(img){
-  img_df <- edges_img %>%
+  img_df <- img %>%
     image_write(tempfile(fileext='png'), format = 'png') %>%
     readPNG() %>%
     as.data.frame()

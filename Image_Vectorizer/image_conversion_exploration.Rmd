@@ -20,7 +20,7 @@ library(gganimate)
 
 ```{r}
 # Load the Olin logo
-img <- image_read("olin_o.jpg")
+img <- image_read("olin.jpg")
 radius <- 0 # default 0
 sigma <- 1 # default 1
 lower_pct <- 10 # default 10
@@ -39,7 +39,7 @@ geom_string <- paste(
 edges_img <- img %>%
   # image_enhance() #%>%
   # image_normalize() #%>%
-  # image_scale(500) %>% # default 500
+  image_scale(500) %>% # default 500
   image_canny(geometry = geom_string)
   # image_quantize(max = 2, colorspace = "gray", dither = FALSE) %>%
   # image_negate()
@@ -348,6 +348,7 @@ instructions_pos %>%
 # Do all of the same things as above but with functions in a separate file
 source("generate_fns.R")
 
+img_df <- generate_matrix(edges_img)
 edges <- generate_edges(img_df)
 instructions <- generate_instructions(edges)
 instructions
