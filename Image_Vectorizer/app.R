@@ -171,34 +171,43 @@ server <- function(input, output) {
                 
             }, deleteFile = FALSE)
             
-            # output$downloadImage <- downloadHandler(
-            #     filename = "robot_image.jpg",
-            #     content = function(file) {
-            #         image_read(image_path) %>%
-            #             image_canny(geometry = geom_string) %>%
-            #             image_write(path = file, format = 'jpg')
-            #     }
-            # )
             # output$downloadInstructions <- downloadHandler(
             #     filename = "robot_instructions.txt",
-            #     content = function(file) {
-            #         foo <- image_read(image_path) %>%
+            #     content = function(file){
+            #         image_read(image_path) %>%
+            #             image_scale(input$resolution) %>%
             #             image_canny(geometry = geom_string) %>%
-            #             image_write(tempfile(fileext='png'), format = 'png')
+            #             image_write(tempfile(fileext='png'), format = 'png') %>%
+            #             readPNG() %>%
+            #             as.data.frame() %>%
+            #             generate_edges() %>%
+            #             generate_instructions() %>%
+            #             write(file)
             #     }
             # )
             output$downloadInstructions <- downloadHandler(
                 filename = "robot_instructions.txt",
                 content = function(file){
-                    image_read(image_path) %>%
-                        image_scale(input$resolution) %>%
-                        image_canny(geometry = geom_string) %>%
-                        image_write(tempfile(fileext='png'), format = 'png') %>%
-                        readPNG() %>%
-                        as.data.frame() %>%
-                        generate_edges() %>%
-                        generate_instructions() %>%
-                        write(file)
+                    withProgress(
+                        message = "Generating robot path...",
+                        detail = "",
+                        {
+                            incProgress(0.1, detail = "Performing edge detection")
+                            x <- image_read(image_path)
+                            x <- x %>% image_scale(input$resolution)
+                            x <- x %>% image_canny(geometry = geom_string)
+                            incProgress(0.1, detail = "Generating image matrix")
+                            x <- x %>% image_write(tempfile(fileext='png'), format = 'png')
+                            x <- x %>% readPNG()
+                            x <- x %>% as.data.frame()
+                            incProgress(0.2, detail = "Generating edge list")
+                            x <- x %>% generate_edges()
+                            incProgress(0.3, detail = "Generating instructions")
+                            x <- x %>% generate_instructions()
+                            incProgress(0.3, detail = "Ready for download!")
+                            x %>% write(file)
+                        }
+                    )
                 }
             )
         }
