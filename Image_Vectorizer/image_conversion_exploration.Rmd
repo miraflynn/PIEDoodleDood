@@ -17,10 +17,10 @@ img
 
 ```{r}
 img <- image_read("olin_o.jpg")
-radius <- 0
-sigma <- 1
-lower_pct <- 10
-upper_pct <- 30
+radius <- 0 # default 0
+sigma <- 1 # default 1
+lower_pct <- 10 # default 10
+upper_pct <- 30 # default 30
 geom_string <- paste(
   radius,
   "x",
@@ -35,6 +35,7 @@ geom_string <- paste(
 edges_img <- img %>% 
   # image_enhance() #%>%
   # image_normalize() #%>%
+  image_scale(500) %>% # default 500
   image_canny(geometry = geom_string)
   # image_quantize(max = 2, colorspace = "gray", dither = FALSE) %>%
   # image_negate()
@@ -45,11 +46,93 @@ edges_img
 
 ```{r}
 
-x <- edges_img %>%
+img_df <- edges_img %>%
   image_write(tempfile(fileext='png'), format = 'png') %>%
-  readPNG()
+  readPNG() %>%
+  as.data.frame()
 
+ones <- data.frame(r = integer(), c = integer()) # make an empty dataframe with
+# columns r and c
+
+for(i in 1:nrow(img_df)){ # For each row and column in the image dataframe
+  for(j in 1:ncol(img_df)){
+    if(img_df[i,j] == 1){ # if the pixel at this location is 1
+      # print(x[i,j])
+      new <- data.frame(r = i, c = j) # make a dataframe with this location
+      ones <- rbind(ones,new) # bind the new dataframe to the existing one
+      # basically add a row to it
+    }
+  }
+}
 ```
 
+```{r}
 
+# all neighbors
+# -1,-1
+# -1,0
+# -1,1
+# 0,-1
+# 0,1
+# 1,-1
+# 1,0
+# 1,1
+# neighborrs <- c(-1,-1,-1,0,0,1,1,1)
+# neighborcs <- c(-1,0,1,-1,1,-1,0,1)
+
+# only next neighbors (reading order)
+# 0,1
+# 1,-1
+# 1,0
+# 1,1
+
+# Create a dataframe of relative neighbor positions. Because everything iterates
+# over rows and columns going from 0 to max, we only need to check neighboring 
+# pixels that are to the right or below the current pixel
+
+neighborrs <- c(0,1,1,1) # make these positions as lists
+neighborcs <- c(1,-1,0,1)
+
+
+nbrs <- data.frame(
+  r = neighborrs,
+  c = neighborcs
+) # make a dataframe from the lists
+
+edges <- data.frame(
+  x1 = integer(),
+  y1 = integer(),
+  x2 = integer(),
+  y2 = integer()
+) # create an empty dataframe for each edge
+
+for(a in 1:nrow(ones)){ # for each pixel of value one
+  my_pos <- ones[a,]
+  my_posr <- my_pos[1,1] # get the row and column of that pixel
+  my_posc <- my_pos[1,2]
+  for(b in 1:nrow(nbrs)){ # for each neighbor pixel
+    nbr_posr_rel <- nbrs[b,1] # get the relative row and column
+    nbr_posc_rel <- nbrs[b,2]
+    nbr_posr <- my_posr + nbr_posr_rel #calculate the absolute row and column
+    nbr_posc <- my_posc + nbr_posc_rel
+    if(
+      nbr_posr >= 1 & 
+      nbr_posr <= nrow(img_df) & 
+      nbr_posc >= 1 & 
+      nbr_posc <= ncol(img_df)
+    ){ # if the neighbor pixel is within the bounds of the image
+      if(img_df[nbr_posr,nbr_posc] == 1){ # if the neighbor pixel is 1
+        edge <- data.frame( # create a 1 row dataframe with the pixel value
+          x1 = my_posc, 
+          y1 = my_posr,
+          x2 = nbr_posc,
+          y2 = nbr_posr
+        )
+        edges <- rbind(edges,edge) # add that row to the edges dataframe
+      }
+    }
+  }
+}
+
+```
 
