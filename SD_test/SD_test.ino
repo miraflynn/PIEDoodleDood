@@ -68,19 +68,25 @@ void setup() {
 
 
 void loop() {
-  // For deciding what to do in this instruction, we assume that the instructions are all AA,BBB,CCC format
-  // AA is the instruction (GO, UP, or DN), BBB is the x coordinate or filler, and CCC is the y coordinate or filler.
-  // Because each instruction has a unique first letter, I only check that.
-  readLine();
-//  Serial.print(instruction);
-//  Serial.print(xstr);
-//  Serial.println(ystr);
-  if(instruction[0] == 'G'){
-    drive(atoi(xstr), atoi(ystr));
-  } else if (instruction[0] == 'U' || instruction[0] == 'D'){
-    movePen(instruction[0]);
+  if(pathFile.available()){
+    // For deciding what to do in this instruction, we assume that the instructions are all AA,BBB,CCC format
+    // AA is the instruction (GO, UP, or DN), BBB is the x coordinate or filler, and CCC is the y coordinate or filler.
+    // Because each instruction has a unique first letter, I only check that.
+    readLine();
+    //  Serial.print(instruction);
+    //  Serial.print(xstr);
+     //  Serial.println(ystr);
+    if(instruction[0] == 'G'){
+      drive(atoi(xstr), atoi(ystr));
+    } else if (instruction[0] == 'U' || instruction[0] == 'D'){
+      movePen(instruction[0]);
+    } else {
+      Serial.println("INVALID INSTRUCTION!");
+      Serial.println(instruction);
+    }
   } else {
-    Serial.println("INVALID INSTRUCTION!");
-    Serial.println(instruction);
+    pathFile.close();
+    Serial.println("Done!");
+    delay(1000);
   }
 }
