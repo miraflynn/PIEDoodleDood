@@ -239,18 +239,18 @@ edges %>%
 posx <- edges[1,1]
 posy <- edges[1,2]
 queue <- edges
-instructions <- c(paste("GO",posx, posy, sep = ",")) # go to the first point
-instructions <- c(instructions, "DN")
+instructions <- c(paste("GO", sprintf("%03d", posx), sprintf("%03d", posy), sep = ",")) # go to the first point
+instructions <- c(instructions, "DN........")
 while(nrow(queue) > 0){ # while there are still edges in the queue
   df <- queue %>% # check for queued edges to draw that connect to my current point
     filter((x1 == posx & y1 == posy) | (x2 == posx & y2 == posy))
   if(nrow(df) == 0){ # If there are no queued edges,then go to the start of the
     # next edge in the queue
-    instructions <- c(instructions, "UP")
+    instructions <- c(instructions, "UP........")
     posx <- queue[1,1]
     posy <- queue[1,2]
-    instructions <- c(instructions, paste("GO", posx, posy, sep = ","))
-    instructions <- c(instructions, "DN")
+    instructions <- c(instructions, paste("GO", sprintf("%03d", posx), sprintf("%03d", posy), sep = ","))
+    instructions <- c(instructions, "DN........")
   } else { # If there are queued edges
     next_edge <- df[1,]
     if(posx == next_edge[1,1] & posy == next_edge[1,2]){ # Find the next point
@@ -262,7 +262,7 @@ while(nrow(queue) > 0){ # while there are still edges in the queue
       new_posy <- next_edge[1,2]
     }
     #Drive to that point
-    instructions <- c(instructions, paste("GO", new_posx, new_posy, sep = ","))
+    instructions <- c(instructions, paste("GO", sprintf("%03d", new_posx), sprintf("%03d", new_posy), sep = ","))
     queue <- queue %>% #Remove the edge we just traveled from the queue
       filter(!((x1 == posx & y1 == posy & x2 == new_posx & y2 == new_posy)|
                (x2 == posx & y2 == posy & x1 == new_posx & y1 == new_posy)))
@@ -356,4 +356,13 @@ instructions
 ```{r}
 write(instructions, "test.txt")
 ```
+
+```{r}
+instructions %>%
+    mutate(
+      x = x %>% as.character(),
+      y = y %>% as.character()
+    )
+```
+
 

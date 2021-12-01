@@ -186,7 +186,7 @@ server <- function(input, output) {
             #     }
             # )
             output$downloadInstructions <- downloadHandler(
-                filename = "robot_instructions.txt",
+                filename = "path.txt",
                 content = function(file){
                     withProgress(
                         message = "Generating robot path...",
