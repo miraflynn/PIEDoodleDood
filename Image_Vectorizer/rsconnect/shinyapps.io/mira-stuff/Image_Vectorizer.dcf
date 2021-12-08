@@ -5,10 +5,10 @@ account: mira-stuff
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 5021358
-bundleId: 5255922
+bundleId: 5346681
 url: https://mira-stuff.shinyapps.io/Image_Vectorizer/
-when: 1637019241.25394
-lastSyncTime: 1637019241.25394
+when: 1638989167.61281
+lastSyncTime: 1638989167.61281
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: image_conversion_exploration.Rmd|olin_o.jpg|rick.jpg|robot_instructions.txt
+ignoredFiles: .RData|image_conversion_exploration.Rmd|olin_o.jpg|rick.jpg|robot_instructions.txt|test.txt
