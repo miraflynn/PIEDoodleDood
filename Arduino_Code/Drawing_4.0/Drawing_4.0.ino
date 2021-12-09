@@ -1,29 +1,29 @@
-// Shows how to run three Steppers at once with varying speeds
-//
-// Requires the Adafruit_Motorshield v2 library
-//   https://github.com/adafruit/Adafruit_Motor_Shield_V2_Library
-// And AccelStepper with AFMotor support
-//   https://github.com/adafruit/AccelStepper
-
-// This tutorial is for Adafruit Motorshield v2 only!
-// Will not work with v1 shields
-
-//#include <AccelStepper.h>
 #include <Adafruit_MotorShield.h>
+#include <SPI.h>
+#include <SD.h>
+#include <Servo.h>
 
-Adafruit_MotorShield AFMSbot(0x61); // Rightmost jumper closed
-Adafruit_MotorShield AFMStop(0x60); // Default address, no jumpers
+File pathFile;
+char instruction[] = "UP";
+char xstr[] = "000";
+char ystr[] = "000";
 
-// Connect two steppers with 200 steps per revolution (1.8 degree)
-// to the top shield
-Adafruit_StepperMotor *myStepper1 = AFMStop.getStepper(200, 1);
-Adafruit_StepperMotor *myStepper2 = AFMStop.getStepper(200, 2);
+int xcur = 0;
+int ycur = 0;
 
-// Connect one stepper with 200 steps per revolution (1.8 degree)
-// to the bottom shield
-Adafruit_StepperMotor *myStepper3 = AFMSbot.getStepper(200, 1);
-Adafruit_StepperMotor *myStepper4 = AFMSbot.getStepper(200, 2);
+int pos = 500;
 
+int downPos = 22;
+int upPos = downPos + 30;
+
+
+Adafruit_MotorShield AFMSbot(0x60); // Default address, no jumpers
+Adafruit_MotorShield AFMStop(0x61); // Rightmost jumper closed
+
+Adafruit_StepperMotor *motorRF = AFMSbot.getStepper(200, 1);
+Adafruit_StepperMotor *motorRB = AFMStop.getStepper(200, 1);
+Adafruit_StepperMotor *motorLF = AFMSbot.getStepper(200, 2);
+Adafruit_StepperMotor *motorLB = AFMStop.getStepper(200, 2);
 
 class MiraStepper
 {
@@ -96,11 +96,11 @@ void MiraStepper::runToTargets(){
     
     if((thisLoopTime - startTime) > _msPerStep1*steps1 && steps1 != abs(targetSteps1)){
       if(targetSteps1 > 0){
-        myStepper1->onestep(FORWARD, DOUBLE);
+        motorRF->onestep(FORWARD, DOUBLE);
         _currentPos1 += 1;
         steps1 += 1;
       } else {
-        myStepper1->onestep(BACKWARD, DOUBLE);
+        motorRF->onestep(BACKWARD, DOUBLE);
         _currentPos1 -= 1;
         steps1 += 1;
       }
@@ -108,11 +108,11 @@ void MiraStepper::runToTargets(){
 
     if((thisLoopTime - startTime) > _msPerStep2*steps2 && steps2 != abs(targetSteps2)){
       if(targetSteps2 > 0){
-        myStepper2->onestep(FORWARD, DOUBLE);
+        motorRB->onestep(FORWARD, DOUBLE);
         _currentPos2 += 1;
         steps2 += 1;
       } else {
-        myStepper2->onestep(BACKWARD, DOUBLE);
+        motorRB->onestep(BACKWARD, DOUBLE);
         _currentPos2 -= 1;
         steps2 += 1;
       }
@@ -120,11 +120,11 @@ void MiraStepper::runToTargets(){
 
     if((thisLoopTime - startTime) > _msPerStep3*steps3 && steps3 != abs(targetSteps3)){
       if(targetSteps3 > 0){
-        myStepper3->onestep(FORWARD, DOUBLE);
+        motorLF->onestep(FORWARD, DOUBLE);
         _currentPos3 += 1;
         steps3 += 1;
       } else {
-        myStepper3->onestep(BACKWARD, DOUBLE);
+        motorLF->onestep(BACKWARD, DOUBLE);
         _currentPos3 -= 1;
         steps3 += 1;
       }
@@ -132,18 +132,18 @@ void MiraStepper::runToTargets(){
 
     if((thisLoopTime - startTime) > _msPerStep4*steps4 && steps4 != abs(targetSteps4)){
       if(targetSteps4 > 0){
-        myStepper4->onestep(FORWARD, DOUBLE);
+        motorLB->onestep(FORWARD, DOUBLE);
         _currentPos4 += 1;
         steps4 += 1;
       } else {
-        myStepper4->onestep(BACKWARD, DOUBLE);
+        motorLB->onestep(BACKWARD, DOUBLE);
         _currentPos4 -= 1;
         steps4 += 1;
       }
     }
     
   }
-  Serial.println("end of run");
+//  Serial.println("end of run");
 }
 
 void MiraStepper::calculateSpeeds(){
@@ -164,23 +164,102 @@ void MiraStepper::calculateSpeeds(){
 
 MiraStepper steppers;
 
-void setup()
-{
+//Servo penServo;  // create servo object to control a servo
+
+void setup() {
   Serial.begin(9600);
+  while (!Serial) {}
+  Serial.print("Initializing SD card...");
+  if (!SD.begin(10)) {
+    Serial.println("initialization failed!");
+    while (1);
+  }
+  Serial.println("initialization done.");
+  // open the file for reading:
+  pathFile = SD.open("path.txt");
+  if (pathFile) {
+    Serial.println("Path file successfully loaded");
+  } else {
+    Serial.println("error opening path.txt");
+  }
+
   AFMSbot.begin(); // Start the bottom shield
   AFMStop.begin(); // Start the top shield
+
   steppers.setMaxSpeedRPM(20);
+
+  //  penServo.attach(9);
 }
 
-
-void loop()
-{
-  steppers.setTargets(100, 100, 200, 200);
-  steppers.runToTargets();
-  delay(1000);
-  
-  steppers.setTargets(0, 0, 0, 0);
-  steppers.runToTargets();
-  delay(1000);
-  
+void loop() {
+  setInstruction();
+  switch (instruction[0]) {
+    case 'G':
+      drive();
+//      Serial.println("vroom");
+      break;
+    case 'U':
+      Serial.println("UP");
+      //      penUp();
+      break;
+    case 'D':
+      Serial.println("DOWN");
+      //      penDown();
+      break;
+    default:
+      Serial.println("INVALID");
+  }
 }
+
+void setInstruction() {
+  if (pathFile.available()) {
+    instruction[0] = pathFile.read(); // instruction is first 2 characters
+    instruction[1] = pathFile.read();
+    pathFile.read(); // read comma to get rid of it
+    xstr[0] = pathFile.read(); // x coord is next 3 characters
+    xstr[1] = pathFile.read();
+    xstr[2] = pathFile.read();
+    pathFile.read(); // read comma to get rid of it
+    ystr[0] = pathFile.read(); // y coord is next 3 characters
+    ystr[1] = pathFile.read();
+    ystr[2] = pathFile.read();
+    pathFile.read(); // newline
+    pathFile.read(); // not 100% sure what this character is tbh
+  } else {
+    instruction[0] = 'N';
+    instruction[1] = 'N';
+  }
+}
+
+void drive() {
+  int x_move = atoi(xstr) - xcur;
+  int y_move = atoi(ystr) - ycur;
+
+  double theta = atan2(y_move, x_move);
+
+  int magnitude = 10000;
+  double diag_1 = sin(theta - 1 / 4 * PI) * magnitude;
+  double diag_2 = sin(theta + 1 / 4 * PI) * magnitude;
+
+
+  // RF, RB, LF, LB
+//  steppers.setTargets(diag_1, diag_2, diag_2, diag_1);
+  steppers.setTargets(pos, pos, pos, pos);
+  steppers.runToTargets();
+  delay(1000);
+  pos = pos+500;
+  
+
+  xcur = atoi(xstr);
+  ycur = atoi(ystr);
+}
+
+//void penUp(){
+//  penServo.write(upPos);
+//  delay(200);
+//}
+
+//void penDown(){
+//  penServo.write(downPos);
+//  delay(200);
+//}
