@@ -9,7 +9,7 @@
 
 #include <Servo.h>
 
-int downPos = 22;
+int downPos = 28;
 int upPos = downPos + 30;
 
 Servo penServo;  // create servo object to control a servo
@@ -44,5 +44,7 @@ void loop() {
 //  delay(2000);
 //  myservo.write(25);
   penUp();
+  delay(2000);
   penDown();
+  delay(2000);
 }
