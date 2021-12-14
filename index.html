@@ -98,8 +98,7 @@
 					<div class="inner"> -->
 						<h2>Project Overview</h2>
 
-						<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique.</p>
-						<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
+						<p>With this project, we wanted to build a robot capable of drawing line art from images. With a mecanum wheel base and small frame, this approach to drawing is scalable in a way gantry drawing systems are not. We incorporated a web interface and SD card reader to provide a simple and easy to use system for generating instructions to the robot from an image. The combination of these elements creates a self-contained drawing robot, although we did not get stable enough wheel motions to allow for detailed image recreation. </p>
 
 						<div class="box alt">
 							<div class="row gtr-uniform">
@@ -200,8 +199,26 @@
 
 						<h2>Firmware Design</h2>
 
-						<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique.</p>
-						<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
+						<p>
+							To read off the SD card, we used the Arduino SD card library. The library has an easy to use interface, meaning this part of the Arduino code could be pretty simple. Each time the Arduino reaches its destination, a new line is read from the SD card, and the robot completes the next instruction. The three instructions are “Go”, for driving to a point, “Up”, for raising the pen, and “Dn”, for lowering the pen. To keep the code as simple as possible, the same number of characters are read for each line, with filler characters for shorter instructions. 
+						</p>
+						<p>
+							When given a “Go” command, the Arduino also received coordinates that the bot should travel to. By comparing these coordinates with the bot’s last location, it can figure out how far and in which direction it needs to drive. The speed of each wheel is determined by the angle at which the robot needs to go, and uses the following equations, shared by diagonal wheels. 
+						</p>
+						<code>
+							sin(theta - 1 / 4 * PI)
+						</code>
+						<br>
+						<code>
+							sin(theta + 1 / 4 * PI)
+						</code>
+						<span class="image right"><img src="images/drive_directions.png" alt="Driving Diagram" /></span>
+						<p>
+							With this iteration, we’re not using motion feedback, and rather relying on step count to track location. Each wheel is set to drive at it’s correct speed for the distance to the next waypoint, and the Arduino loops back to read the next line of the SD card.
+						</p>
+						<p>
+							When programming our stepper motors, we found that none of the libraries we could find allowed us to complete basic stepper movements with multiple steppers using the motor shields we had. Therefore, we programmed a new library designed to work well with our motor shields. The primary functionality of the library is to calculate what speed to run each motor to reach a destination point, with each motor arriving at the same time. Once we implemented this library, we were able to use it to drive the stepper motors at the same time at the precise speeds we needed.
+						</p>
 					<!-- </div>
 				</section>
 				<section id = "software" class="wrapper style1 fade-up">
